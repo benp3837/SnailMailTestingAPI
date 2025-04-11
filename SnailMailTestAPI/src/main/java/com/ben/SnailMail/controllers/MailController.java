@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/*
+ * This Controller is responsible for the user's mailbox (NOT the mailing system)
+ */
 @RestController
 @RequestMapping("/mail")
 @CrossOrigin
@@ -24,6 +27,7 @@ public class MailController {
 
     }
 
+    //TODO: Might not need this to get the point across...
     @GetMapping("/sent")
     public ResponseEntity<List<Mail>> getSentBox(){
 
