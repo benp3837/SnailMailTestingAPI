@@ -20,7 +20,7 @@ public class MailController {
         List<Mail> inbox = List.of(
                 new Mail(1, "guy@snailmail.com", "me@snailmail.com", "Swimming?", "I like swimming"),
                 new Mail(2, "guy@snailmail.com", "me@snailmail.com", "Beagles", "I like beagles"),
-                new Mail(3, "gal@snailmail.com", "me@snailmail.com", "Heyooo", "I be like heyooo")
+                new Mail(3, "gal@snailmail.com", "me@snailmail.com", "Heyooo", "I like ladybugs")
         );
 
         return ResponseEntity.ok().body(inbox);
@@ -40,7 +40,5 @@ public class MailController {
         return ResponseEntity.ok().body(inbox);
 
     }
-
-    //TODO: should I have filtering and stuff in the backend or the frontend?
 
 }

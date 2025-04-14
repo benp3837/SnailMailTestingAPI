@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
+//This will help us model the incoming Mail data
 interface Mail {
   mailId: number
   sender: string
@@ -9,85 +10,65 @@ interface Mail {
 }
 
 export const Inbox: React.FC = () => {
+
+  //Store the Mail[] with useState
   const [inbox, setInbox] = useState<Mail[]>([])
 
+  //Get the mail from the API on component render
   useEffect(() => {
     getInbox()
   }, [])
 
   const getInbox = async () => {
     try {
-      // const response = await axios.get("http://localhost:8080/mail")
-      // setInbox(response.data)
 
-      // Dummy data reflecting Java class fields
-      const dummyInbox: Mail[] = [
-        {
-          mailId: 1,
-          sender: "alice@example.com",
-          recipient: "you@example.com",
-          subject: "Welcome to SnailMail!"
-        },
-        {
-          mailId: 2,
-          sender: "billing@company.com",
-          recipient: "you@example.com",
-          subject: "Your invoice is ready"
-        },
-        {
-          mailId: 3,
-          sender: "friend@party.com",
-          recipient: "you@example.com",
-          subject: "Party this weekend?"
-        },
-        {
-          mailId: 4,
-          sender: "boss@work.com",
-          recipient: "you@example.com",
-          subject: "Don't forget Monday's meeting"
-        }
-      ]
+      //Send a GET request to the API to get all inbox emails
+      const response = await axios.get("http://localhost:8080/mail")
 
-      setInbox(dummyInbox)
+      //Set the returned data in our useState
+      setInbox(response.data)
+
     } catch {
       alert("Something went wrong trying to fetch mail")
     }
   }
 
   return (
-    <div className="container py-4">
 
-      {/* Simple Header */}
-      <div className="border-bottom mr-5 py-2">
-        <h1 className="text-start font-monospace">
-          🐌 SnailMail
-        </h1>
-      </div>
+    <div className="container m-4">
 
-      <h2 className="my-4 font-monospace">Inbox</h2>
+    {/* Simple Top Navbar */}
+    <nav className="navbar border-bottom  justify-content-center py-3">
+      <h2 className="font-monospace">🐌 SnailMail 🐌</h2>
+    </nav>
 
-      {inbox.length === 0 ? (
-        <div className="alert alert-info text-center">No mail yet. You're all caught up!</div>
-      ) : (
-        <table className="table table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>Subject</th>
-              <th>Sender</th>
-              <th>Recipient</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inbox.map((mail) => (
-              <tr key={mail.mailId}>
-                <td>{mail.subject}</td>
-                <td>{mail.sender}</td>
-                <td>{mail.recipient}</td>
+      <div className="py-4">
+
+        <h3 className="mb-3 mt-4 font-monospace">Inbox</h3>
+
+        {inbox.length === 0 ? (
+          <div className="alert alert-primary text-center">No mail yet. You're all caught up!</div>
+        ) : (
+          <table className="table table-hover">
+            <thead className="thead-light">
+              <tr>
+                <th>Subject</th>
+                <th>Sender</th>
+                <th>Recipient</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {inbox.map((mail) => (
+                <tr key={mail.mailId}>
+                  <td>{mail.subject}</td>
+                  <td>{mail.sender}</td>
+                  <td>{mail.recipient}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   )
 }

@@ -1,0 +1,24 @@
+[
+    {
+        "mailId": 1,
+        "sender": "alice@snailmail.com",
+        "recipient": "me@snailmail.com",
+        "subject": "Meeting Reminder",
+        "body": "FIXTURES ARE A WAY TO STORE MOCK DATA FOR OUR CYPRESS TESTS!"
+    },
+    {
+        "mailId": 2,
+        "sender": "carol@snailmail.com",
+        "recipient": "me@snailmail.com",
+        "subject": "Lunch Plans",
+        "body": "You can add dummy data here to intercept HTTP requests and return specific data"
+    },
+    {
+        "mailId": 3,
+        "sender": "bob@snailmail.com",
+        "recipient": "me@snailmail.com",
+        "subject": "Alright Alright Alright",
+        "body": "Why do this? It lets us write easier tests and helps pinpoint what went wrong if HTTP-dependent tests fail"
+    }
+]
+  
