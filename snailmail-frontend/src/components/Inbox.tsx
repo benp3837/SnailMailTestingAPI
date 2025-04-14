@@ -35,16 +35,9 @@ export const Inbox: React.FC = () => {
 
   return (
 
-    <div className="container m-4">
+    <div className="container m-5">
 
-    {/* Simple Top Navbar */}
-    <nav className="navbar border-bottom  justify-content-center py-3">
-      <h2 className="font-monospace">🐌 SnailMail 🐌</h2>
-    </nav>
-
-      <div className="py-4">
-
-        <h3 className="mb-3 mt-4 font-monospace">Inbox</h3>
+        <h3 className="font-monospace">Inbox</h3>
 
         {inbox.length === 0 ? (
           <div className="alert alert-primary text-center">No mail yet. You're all caught up!</div>
@@ -69,6 +62,6 @@ export const Inbox: React.FC = () => {
           </table>
         )}
       </div>
-    </div>
+   
   )
 }
