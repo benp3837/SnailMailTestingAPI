@@ -21,7 +21,7 @@ class SnailMailApplicationTests {
 	void testGetInbox() {
 		//Response object from RestAssured. Let's extract the HTTP response to run tests!
 		Response response = given()
-				.when().get("HTTP://SOME_URL")
+				.when().get("http://localhost:8080/mail")
 				.then()
 				.extract().response(); //Extract the response object
 
@@ -68,6 +68,7 @@ class SnailMailApplicationTests {
 
 	}
 
+	//TODO: this test fails right now since the response body is a string (not JSON)
 	//Unsuccessful POST request (Missing Subject)
 	@Test
 	void testSendMailFail(){
