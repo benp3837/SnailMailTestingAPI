@@ -1,8 +1,14 @@
+import { useState } from 'react'
 import './App.css'
+import { Compose } from './components/Compose'
 import { Inbox } from './components/Inbox'
 import 'bootstrap/dist/css/bootstrap.css'
 
 function App() {
+
+  const [showComposeCard, setShowComposeCard] = useState<boolean>(false)
+
+  const onClose = (()=>{setShowComposeCard(!showComposeCard)})
 
   return (
     <>
@@ -13,6 +19,9 @@ function App() {
       </nav>
 
       <Inbox/>
+
+      {showComposeCard ? <Compose onClose={onClose}/> : ""}
+      {!showComposeCard ? <button className="btn btn-sm btn-outline-primary" onClick={onClose}>compose email</button> : ""}
     </>
   )
 }

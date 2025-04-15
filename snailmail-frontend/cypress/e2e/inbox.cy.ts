@@ -3,6 +3,15 @@
 //^Cypress won't recognize any types without this first line ^ 
 //(describe, beforeEach, it, cy, and more)
 
+/*BIG PICTURE - 
+ *This file contains 4 End to End tests for the Inbox component.
+    1) Check that a real, successful GET inbox request to the backend works as expected
+    2) Check that a real, successful GET inbox request to the backend works differently when there is no mail
+    3) Check that a fake GET inbox request to the backend works as expected
+    4) Check that a real, failed GET request is handled in an expected way
+ *
+*/
+
 describe("Inbox Component - With real GET request to the API", () => {
     it("fetches and displays mail from the backend", () => {
       
