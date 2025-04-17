@@ -7,6 +7,7 @@ interface Mail {
   sender: string
   recipient: string
   subject: string
+  body: string
 }
 
 export const Inbox: React.FC = () => {
@@ -35,7 +36,7 @@ export const Inbox: React.FC = () => {
 
   return (
 
-    <div className="container m-5">
+    <div className="container">
 
         <h3 className="font-monospace">Inbox</h3>
 
@@ -47,7 +48,7 @@ export const Inbox: React.FC = () => {
               <tr>
                 <th>Subject</th>
                 <th>Sender</th>
-                <th>Recipient</th>
+                <th>Message</th>
               </tr>
             </thead>
             <tbody>
@@ -55,7 +56,7 @@ export const Inbox: React.FC = () => {
                 <tr key={mail.mailId}>
                   <td>{mail.subject}</td>
                   <td>{mail.sender}</td>
-                  <td>{mail.recipient}</td>
+                  <td>{mail.body}</td>
                 </tr>
               ))}
             </tbody>

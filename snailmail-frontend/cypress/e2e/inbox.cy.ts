@@ -93,7 +93,7 @@ describe("Inbox Component - API fails to respond", () => {
       }).as("getInboxFail");
   
       //Stub the alert when it pops up so Cypress doesn't get interrupted
-      //TODO: "Stub"? that means _____________
+      //"Stub"? we're faking the alert so Cypress can track it without actually causing a popup
       cy.on("window:alert", cy.stub().as("alert"));
   
       //Render Inbox component
@@ -103,7 +103,7 @@ describe("Inbox Component - API fails to respond", () => {
       //Not necessary due to Cypress's automatic waiting! But it does add reliability.
       cy.wait("@getInboxFail");
   
-      //Confirm alert got triggered
+      //Confirm alert got triggered. Note the use of the alias we defined a few lines above
       cy.get("@alert").should("have.been.calledWith", "Something went wrong trying to fetch mail");
 
       //Make sure "No Mail" message is present and table isn't rendered

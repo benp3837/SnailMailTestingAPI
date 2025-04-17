@@ -27,18 +27,50 @@ public class MailController {
 
     }
 
-    //TODO: Might not need this to get the point across...
-    @GetMapping("/sent")
-    public ResponseEntity<List<Mail>> getSentBox(){
+    @PostMapping
+    public ResponseEntity<Mail> sendMail(@RequestBody Mail mailToSend){
 
-        List<Mail> inbox = List.of(
-                new Mail(1, "me@snailmail.com", "guy@snailmail.com", "Re:Swimming?", "I like swimming sorta"),
-                new Mail(2, "me@snailmail.com", "guy@snailmail.com", "Re:Beagles", "I like beagles too"),
-                new Mail(3, "me@snailmail.com", "gal@snailmail.com", "Re:Heyooo", "Gurl me too")
-        );
+        //Some basic checks to throw Exceptions on invalid mail-
 
-        return ResponseEntity.ok().body(inbox);
+        if(mailToSend.getSender() == null || mailToSend.getRecipient() == null ||
+                mailToSend.getSender().isBlank() ||mailToSend.getRecipient().isBlank()){
+            throw new IllegalArgumentException("Sender or recipient cannot be null");
+        }
+
+        if(mailToSend.getSubject() == null || mailToSend.getBody() == null
+                || mailToSend.getSubject().isBlank() || mailToSend.getBody().isBlank()){
+
+            System.out.println("Hi");
+
+            throw new IllegalArgumentException("Subject or body cannot be null");
+        }
+
+        System.out.println(mailToSend);
+
+        //If all checks pass, we can send the mail
+        return ResponseEntity.status(201).body(mailToSend);
 
     }
 
+    //Spring MVC ExceptionHandler - Super generic one to help with tests
+    @ExceptionHandler
+    public ResponseEntity<Exception> handleException(Exception e) {
+        return ResponseEntity.status(400).body(e);
+    }
+
 }
+
+//    //TODO: Might not need this to get the point across...
+//    @GetMapping("/sent")
+//    public ResponseEntity<List<Mail>> getSentBox(){
+//
+//        List<Mail> inbox = List.of(
+//                new Mail(1, "me@snailmail.com", "guy@snailmail.com", "Re:Swimming?", "I like swimming sorta"),
+//                new Mail(2, "me@snailmail.com", "guy@snailmail.com", "Re:Beagles", "I like beagles too"),
+//                new Mail(3, "me@snailmail.com", "gal@snailmail.com", "Re:Heyooo", "Gurl me too")
+//        );
+//
+//        return ResponseEntity.ok().body(inbox);
+//
+//    }
+

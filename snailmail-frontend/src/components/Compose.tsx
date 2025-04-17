@@ -1,11 +1,19 @@
 import React from "react";
 
+//TODO: state object for mailToSend
+
 //Takes props of the function that closes this component (Defined in App.tsx)
 interface Props {
   onClose: () => void;
 }
 
 export const Compose: React.FC<Props> = ({ onClose }) => {
+
+    const sendEmail = () => {
+        alert("sent mail lol")
+        onClose()
+    }
+
   return (
     //Container for compose email card - throw it to the bottom right and put a shadow on it 
     <div className="card shadow position-fixed bottom-0 end-0 m-5 w-25">
@@ -22,7 +30,7 @@ export const Compose: React.FC<Props> = ({ onClose }) => {
             <textarea rows={6} className="form-control border-0 shadow-none w-100" placeholder="Write your message here..."/>
         </div>
 
-        <button className="btn btn-sm btn-outline-primary mt-3 mx-auto d-block">Send</button>
+        <button className="btn btn-sm btn-outline-primary mt-3 mx-auto d-block" onClick={sendEmail}>Send</button>
 
     </div>
     

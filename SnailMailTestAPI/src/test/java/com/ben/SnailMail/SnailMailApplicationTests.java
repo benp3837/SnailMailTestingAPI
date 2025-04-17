@@ -53,7 +53,7 @@ class SnailMailApplicationTests {
 		Response response = given()
 				.contentType("application/json") //Do we need to specify the content type here?
 				.body(mail)
-				.when().post("http://localhost:8080/mailing")
+				.when().post("http://localhost:8080/mail")
 				.then()
 				.extract().response();
 
@@ -77,9 +77,9 @@ class SnailMailApplicationTests {
 		Mail mail = new Mail(1, "me@snailmail.com", "you@snailmail.com", "", "We b testing");
 
 		Response response = given()
-				.contentType("application/json") //Do we need to specify the content type here?
+				.contentType("application/json")
 				.body(mail)
-				.when().post("http://localhost:8080/mailing")
+				.when().post("http://localhost:8080/mail")
 				.then()
 				.extract().response();
 
