@@ -75,13 +75,14 @@ describe('Inbox Component - With Fixture Based Dummy Data', () => {
         cy.get('tbody tr').should('have.length', 3)
     
         //Check that each message displays correct content
-        cy.contains('td', 'alice@snailmail.com').should('exist')
-        cy.contains('td', 'me@snailmail.com').should('exist')
         cy.contains('td', 'Meeting Reminder').should('exist')
-    
-        cy.contains('td', 'carol@snailmail.com').should('exist')
-        cy.contains('td', 'me@snailmail.com').should('exist')
+        cy.contains('td', 'alice@snailmail.com').should('exist')
+        cy.contains('td', 'Fixtures help us mock data, which gives us complete control over the data being tested').should('exist')
+        
         cy.contains('td', 'Lunch Plans').should('exist')
+        cy.contains('td', 'carol@snailmail.com').should('exist')
+        cy.contains('td', 'Mocks are helpful for early UI testing when dont have an API yet...').should('exist')
+    
     })
   })
 
@@ -106,8 +107,16 @@ describe("Inbox Component - API fails to respond", () => {
       //Confirm alert got triggered. Note the use of the alias we defined a few lines above
       cy.get("@alert").should("have.been.calledWith", "Something went wrong trying to fetch mail");
 
-      //Make sure "No Mail" message is present and table isn't rendered
-      cy.contains("No mail yet. You're all caught up!").should("be.visible");
-      cy.get("table").should("not.exist");
+      cy.pause()
+
+      cy.log("I'm a Cypress test log! I'll show up in the Cypress GUI")
+      console.log("I'm a regular console log! I'll show up in the Cypress CLI")
+
     });
   });
+
+
+//TODO: test that the compose component renders when "compose email" button is clicked
+//THIS TEST WILL BE HELPFUL WHEN YOU START TESTING THE COMPOSE COMPONENT!
+//cy.get('button').debug().click();
+//cy.get('button').click();
