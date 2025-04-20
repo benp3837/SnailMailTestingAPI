@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-//This will help us model the incoming Mail data
+//This will help us model the incoming Mail data. Think of Interfaces in TS like custom data types
 interface Mail {
   mailId: number
   sender: string
@@ -28,6 +28,8 @@ export const Inbox: React.FC = () => {
 
       //Set the returned data in our useState
       setInbox(response.data)
+
+      console.log(response.data)
 
     } catch {
       alert("Something went wrong trying to fetch mail")
