@@ -4,11 +4,12 @@
 //(describe, beforeEach, it, cy, and more)
 
 /*BIG PICTURE - 
- *This file contains 4 End to End tests for the Inbox component.
+ *This file contains 5 End to End tests for the Inbox component.
     1) Check that a real, successful GET inbox request to the backend works as expected
     2) Check that a real, successful GET inbox request to the backend works differently when there is no mail
     3) Check that a fake GET inbox request to the backend works as expected
     4) Check that a real, failed GET request is handled in an expected way
+    5) Check that clicking the "compose email" button opens the Compose.tsx
  *
 */
 
@@ -107,16 +108,30 @@ describe("Inbox Component - API fails to respond", () => {
       //Confirm alert got triggered. Note the use of the alias we defined a few lines above
       cy.get("@alert").should("have.been.calledWith", "Something went wrong trying to fetch mail");
 
-      cy.pause()
+      //Some debugging stategies-------------------
+
+      cy.pause() //This will pause the test runner. You have to manually resume it
 
       cy.log("I'm a Cypress test log! I'll show up in the Cypress GUI")
-      console.log("I'm a regular console log! I'll show up in the Cypress CLI")
 
     });
   });
 
 
-//TODO: test that the compose component renders when "compose email" button is clicked
 //THIS TEST WILL BE HELPFUL WHEN YOU START TESTING THE COMPOSE COMPONENT!
-//cy.get('button').debug().click();
-//cy.get('button').click();
+describe("Inbox Component - Compose Email Button Renders Compose.tsx", () => {
+  it("renders the Compose component when the button is clicked", () => {
+    
+    //Render App.tsx
+    cy.visit("http://localhost:5173");
+
+    //Find and click the button that opens the Compose component
+    cy.contains("button", "Compose Email").click();
+
+    //Assert that the Compose component is visible - using a data
+    cy.get('[data-testid="compose-component"]').should("exist");
+
+    //The last line of this test will be useful when you test the Componse.tsx
+
+  });
+});

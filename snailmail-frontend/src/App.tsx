@@ -8,7 +8,7 @@ function App() {
 
   const [showComposeCard, setShowComposeCard] = useState<boolean>(false)
 
-  const onClose = (()=>{setShowComposeCard(!showComposeCard)})
+  const showComposeToggle = (()=>{setShowComposeCard(!showComposeCard)})
 
   return (
     <>
@@ -20,8 +20,12 @@ function App() {
 
       <Inbox/>
 
-      {showComposeCard ? <Compose onClose={onClose}/> : ""}
-      {!showComposeCard ? <button className="btn btn-sm btn-outline-primary" onClick={onClose}>compose email</button> : ""}
+      {/* if showComposeCard is truthy, show the Compose component, 
+      otherwise show the "compose email button"
+      Also, notice the data attribute in the Compose component! It'll help us write our tests*/}
+      {showComposeCard ? <Compose data-testid="compose-component" onClose={showComposeToggle}/> : ""}
+      
+      {!showComposeCard ? <button className="btn btn-sm btn-outline-primary" onClick={showComposeToggle}>Compose Email</button> : ""}
     </>
   )
 }

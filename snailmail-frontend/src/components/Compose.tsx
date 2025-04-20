@@ -2,8 +2,10 @@ import React, { useState } from "react";
 
 //TODO: state object for mailToSend
 
-//Takes props of the function that closes this component (Defined in App.tsx)
-interface Props {
+//Takes 2 values in props: 
+    //The function that closes this component (Defined in App.tsx)
+    //The data-testid attribute (for a better-practice testing example)
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   onClose: () => void;
 }
 
@@ -15,36 +17,29 @@ interface Mail {
     body: string;
   }
 
-export const Compose: React.FC<Props> = ({ onClose }) => {
+export const Compose: React.FC<Props> = ({ onClose, ...id }) => {
 
     //defining state for mail, with a default value for sender (me@snailmail.com)
     const [mailToSend, setMailToSend] = useState<Mail>(
         {
             sender: 'me@snailmail.com',
-            recipient: '',
+            recipient: 'default@snailmail.com',
             subject: '',
             body: '',
         })
 
-    const composeEmail = () => {
-
-        setMailToSend({
-            sender: 'me@snailmail.com',
-            recipient: 'gal@snailmail.com',
-            subject: 'I liek turtle',
-            body: 'turtles turles turtlessssss',
-        })
-
-    }
-
     const sendEmail = () => {
+
+        console.log("sent mail to: " + mailToSend.recipient)
+
         alert("sent mail to: " + mailToSend.recipient)
         onClose()
     }
 
     return (
         //Container for compose email card - throw it to the bottom right and put a shadow on it 
-        <div className="card shadow position-fixed bottom-0 end-0 m-5 w-25">
+        //Also, note the data attribute at the end. This helps our 5th test recognize the Component.
+        <div className="card shadow position-fixed bottom-0 end-0 m-5 w-25" {...id}>
 
             <h6 className="border-bottom position-absolute start-0 top-0 m-2">Compose Email</h6>
             <button onClick={onClose} className="btn-close position-absolute end-0 top-0 m-1"></button>
