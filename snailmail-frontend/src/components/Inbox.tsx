@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 
 //This will help us model the incoming Mail data. Think of Interfaces in TS like custom data types
 interface Mail {
-  mailId: number
   sender: string
   recipient: string
   subject: string
@@ -54,8 +53,9 @@ export const Inbox: React.FC = () => {
               </tr>
             </thead>
             <tbody>
+              {/* For every element (which we'll call "mail") in the inbox, render a new table row */}
               {inbox.map((mail) => (
-                <tr key={mail.mailId}>
+                <tr>
                   <td>{mail.subject}</td>
                   <td>{mail.sender}</td>
                   <td>{mail.body}</td>

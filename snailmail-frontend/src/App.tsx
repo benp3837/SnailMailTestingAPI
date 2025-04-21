@@ -17,11 +17,12 @@ function App() {
       <nav className="navbar border-bottom justify-content-center mb-5">
         <h2 className="font-monospace">🐌 SnailMail 🐌</h2>
       </nav>
-
+      
+      {/* Render the InboxCompoenent */}
       <Inbox/>
 
-      {/* if showComposeCard is truthy, show the Compose component, 
-      otherwise show the "compose email button"
+      {/* if showComposeCard is truthy, render the Compose component, 
+      otherwise render the "compose email button"
       Also, notice the data attribute in the Compose component! It'll help us write our tests*/}
       {showComposeCard ? <Compose data-testid="compose-component" onClose={showComposeToggle}/> : ""}
       
