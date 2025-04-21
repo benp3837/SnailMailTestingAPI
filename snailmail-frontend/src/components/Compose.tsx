@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 //Takes 2 values in props: 
@@ -39,15 +40,20 @@ export const Compose: React.FC<Props> = ({ onClose, ...testId }) => {
 
     }
 
-    const sendEmail = () => {
+    const sendEmail = async () => {
 
         //If recipient is empty, don't send anything and yell at the user (yes we should validate every field)
         if(mailToSend.recipient.trim() === ""){
             alert("Recipient cannot be empty!")
         } else {
-            console.log("sent mail to: " + mailToSend.recipient)
-            alert("sent mail to: " + mailToSend.recipient)
-            onClose()
+            try{
+                const response = await axios.post("http://localhost:8080/mail", mailToSend)
+                console.log(response.data)
+                alert("sent mail to: " + response.data.recipient)
+                onClose()
+            } catch {
+                alert("something went wrong sending your mail!")
+            }
         }
 
     }

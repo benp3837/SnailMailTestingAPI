@@ -40,8 +40,6 @@ public class MailController {
         if(mailToSend.getSubject() == null || mailToSend.getBody() == null
                 || mailToSend.getSubject().isBlank() || mailToSend.getBody().isBlank()){
 
-            System.out.println("Hi");
-
             throw new IllegalArgumentException("Subject or body cannot be null");
         }
 
@@ -55,6 +53,7 @@ public class MailController {
     //Spring MVC ExceptionHandler - Super generic one to help with tests
     @ExceptionHandler
     public ResponseEntity<Exception> handleException(Exception e) {
+        System.out.println(e.getMessage());
         return ResponseEntity.status(400).body(e);
     }
 
