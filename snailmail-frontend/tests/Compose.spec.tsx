@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 //TODO: describe()??
-//TODO: beforeEach type stuff to click open the compose component
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('http://localhost:5173'); 
+});
 
 test('user can send email via compose screen', async ({ page }) => {
-  await page.goto('http://localhost:5173'); 
 
   await page.getByRole('button', { name: 'Compose Email' }).click(); //Click Compose Email button
 
@@ -22,8 +24,6 @@ test('user can send email via compose screen', async ({ page }) => {
 
 
 test('shows alert when trying to send without recipient', async ({ page }) => {
-  // Visit your app
-  await page.goto('http://localhost:5173');
 
   // Click the "Compose Email" button
   await page.getByRole('button', { name: 'Compose Email' }).click();
@@ -43,8 +43,6 @@ test('shows alert when trying to send without recipient', async ({ page }) => {
 });
 
 test('closes the compose component when X is clicked', async ({ page }) => {
-    // Go to the app
-    await page.goto('http://localhost:5173');
   
     // Open the Compose component
     await page.getByRole('button', { name: 'Compose Email' }).click();
@@ -57,4 +55,19 @@ test('closes the compose component when X is clicked', async ({ page }) => {
   
     // Verify the component is no longer in the DOM
     await expect(page.getByTestId('compose-component')).toHaveCount(0);
+  });
+
+  //For this test, we'll create a new context to switch the base URL defined in the beforeEach
+  test('should show the error page when visiting an invalid URL', async ({ browser }) => {
+    // Create an isolated context that doesn't inherit the beforeEach
+    const context = await browser.newContext();
+    const page = await context.newPage();
+
+    await page.goto('http://localhost:5173/nonexistent');
+
+    //Assert that our error page shows up
+    await expect(page.locator('text=404')).toBeVisible(); // or however your app shows errors
+    // You could also check for 'Page not found' or other wording
+
+    await context.close();
   });
