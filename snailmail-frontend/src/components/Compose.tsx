@@ -47,12 +47,22 @@ export const Compose: React.FC<Props> = ({ onClose, ...testId }) => {
             alert("Recipient cannot be empty!")
         } else {
             try{
+
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailToSend.recipient)) {
+                    throw new Error("Recipient doesn't appear to be a valid email address");
+                }
+
                 const response = await axios.post("http://localhost:8080/mail", mailToSend)
                 console.log(response.data)
                 alert("sent mail to: " + response.data.recipient)
                 onClose()
-            } catch {
-                alert("something went wrong sending your mail!")
+            } catch (e) {
+
+                if(e instanceof Error){
+                    alert(e.message)
+                } else {
+                    alert("Some unknown error occurred!")
+                }
             }
         }
 
