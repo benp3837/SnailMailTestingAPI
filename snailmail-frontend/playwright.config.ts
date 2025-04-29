@@ -2,11 +2,16 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './playwright_tests',
+  // projects: [
+  //   { name: 'Chromium', use: { browserName: 'chromium' } },
+  //   { name: 'Firefox', use: { browserName: 'firefox' } },
+  //   { name: 'WebKit', use: { browserName: 'webkit' } },
+  // ],
   use: {
-    browserName: 'chromium', //or firefox or webkit!
+    //browserName: 'chromium', //or firefox or webkit!
     headless: true,
     screenshot: 'only-on-failure',
-    baseURL: 'http://localhost:5173', //only for vite
+    baseURL: 'http://localhost:5176' //base URL for React vite projects
   },
 });
