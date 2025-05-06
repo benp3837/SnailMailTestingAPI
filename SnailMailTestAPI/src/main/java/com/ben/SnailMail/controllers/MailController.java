@@ -1,6 +1,8 @@
 package com.ben.SnailMail.controllers;
 
 import com.ben.SnailMail.models.Mail;
+import com.ben.SnailMail.services.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,39 +16,33 @@ import java.util.List;
 @CrossOrigin
 public class MailController {
 
+    //Autowired service so the controller can use its methods
+    @Autowired
+    private MailService mailService;
+
     @GetMapping
     public ResponseEntity<List<Mail>> getInbox(){
 
-        List<Mail> inbox = List.of(
-                new Mail(1, "guy@snailmail.com", "me@snailmail.com", "Swimming?", "I like swimming"),
-                new Mail(2, "guy@snailmail.com", "me@snailmail.com", "Beagles", "I like beagles"),
-                new Mail(3, "gal@snailmail.com", "me@snailmail.com", "Heyooo", "I like ladybugs")
-        );
+        List<Mail> inbox = mailService.getInbox();
 
-        return ResponseEntity.ok().body(inbox);
+        //yes, inbox will never be null since the values are hardcoded in the service
+        //BUT we can use mockito to mock the service and return null
+        if(inbox == null){
+            return ResponseEntity.status(204).body(null);
+        } else{
+            return ResponseEntity.ok().body(inbox);
+        }
 
     }
 
     @PostMapping
     public ResponseEntity<Mail> sendMail(@RequestBody Mail mailToSend){
 
-        //Some basic checks to throw Exceptions on invalid mail-
+        //Send the mail object to the service
+        Mail sentMail = mailService.sendMail(mailToSend);
 
-        if(mailToSend.getSender() == null || mailToSend.getRecipient() == null ||
-                mailToSend.getSender().isBlank() ||mailToSend.getRecipient().isBlank()){
-            throw new IllegalArgumentException("Sender or recipient cannot be null");
-        }
-
-        if(mailToSend.getSubject() == null || mailToSend.getBody() == null
-                || mailToSend.getSubject().isBlank() || mailToSend.getBody().isBlank()){
-
-            throw new IllegalArgumentException("Subject or body cannot be null");
-        }
-
-        System.out.println(mailToSend);
-
-        //If all checks pass, we can send the mail
-        return ResponseEntity.status(201).body(mailToSend);
+        //If all checks from the service pass, we can send the mail
+        return ResponseEntity.status(201).body(sentMail);
 
     }
 

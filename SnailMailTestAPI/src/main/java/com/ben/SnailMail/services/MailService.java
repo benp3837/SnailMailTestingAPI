@@ -1,0 +1,46 @@
+package com.ben.SnailMail.services;
+
+import com.ben.SnailMail.models.Mail;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class MailService {
+
+    //Imagine that this method is actually getting the inbox from a database
+    public List<Mail> getInbox() {
+
+        //Call to the database in search of the inbox would go here
+
+        return List.of(
+                new Mail(1, "guy@snailmail.com", "me@snailmail.com", "Swimming?", "I like swimming"),
+                new Mail(2, "guy@snailmail.com", "me@snailmail.com", "Beagles", "I like beagles"),
+                new Mail(3, "gal@snailmail.com", "me@snailmail.com", "Heyooo", "I like ladybugs")
+        );
+    }
+
+    //Send mail input validation lives here now! The service usually handles all of this stuff
+    public Mail sendMail(Mail mailToSend) {
+
+        //Some basic checks to throw Exceptions on invalid mail-
+        //Thrown Exceptions will get caught in the controller! (see our exception handler)
+
+        if(mailToSend.getSender() == null || mailToSend.getRecipient() == null ||
+                mailToSend.getSender().isBlank() ||mailToSend.getRecipient().isBlank()){
+            throw new IllegalArgumentException("Sender or recipient cannot be null");
+        }
+
+        if(mailToSend.getSubject() == null || mailToSend.getBody() == null
+                || mailToSend.getSubject().isBlank() || mailToSend.getBody().isBlank()){
+
+            throw new IllegalArgumentException("Subject or body cannot be null");
+        }
+
+        //Mail would be sent to the DB here
+
+        //Return the valid mail object to the controller
+        return mailToSend;
+    }
+
+}
