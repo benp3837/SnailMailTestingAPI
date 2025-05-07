@@ -54,18 +54,3 @@ public class MailController {
     }
 
 }
-
-//    //TODO: Might not need this to get the point across...
-//    @GetMapping("/sent")
-//    public ResponseEntity<List<Mail>> getSentBox(){
-//
-//        List<Mail> inbox = List.of(
-//                new Mail(1, "me@snailmail.com", "guy@snailmail.com", "Re:Swimming?", "I like swimming sorta"),
-//                new Mail(2, "me@snailmail.com", "guy@snailmail.com", "Re:Beagles", "I like beagles too"),
-//                new Mail(3, "me@snailmail.com", "gal@snailmail.com", "Re:Heyooo", "Gurl me too")
-//        );
-//
-//        return ResponseEntity.ok().body(inbox);
-//
-//    }
-

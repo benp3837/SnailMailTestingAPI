@@ -90,7 +90,7 @@ class SnailMailApplicationTests {
 
 	//Unsuccessful POST request (Missing Subject)
 	@Test
-	void testSendMailFail(){
+	void testSendMailFailsOnMissingField(){
 
 		//This one has a missing subject, so it should throw an exception
 		Mail mail = new Mail(1, "me@snailmail.com", "you@snailmail.com", "", "We b testing");
@@ -110,11 +110,13 @@ class SnailMailApplicationTests {
 
 	}
 
+	//TODO: test send fails on XYZ________ missing input?
+
 	//Tests using mocking--------------- Mockito and MockMVC
 
 	//Here's a test that uses Mockito - it will let us mock method calls and return values of our choosing
 	@Test
-	void returnsNoContentIfInboxIsNull() throws Exception {
+	void returnsNoContentIfInboxIsEmpty() throws Exception {
 
 		when(mailService.getInbox()).thenReturn(null); //mock the method call, return null
 

@@ -37,6 +37,10 @@ public class MailService {
             throw new IllegalArgumentException("Subject or body cannot be null");
         }
 
+        if(mailToSend.getSubject().length() > 20){
+            throw new IllegalArgumentException("Save it for the message body, bud");
+        }
+
         //Mail would be sent to the DB here
 
         //Return the valid mail object to the controller
