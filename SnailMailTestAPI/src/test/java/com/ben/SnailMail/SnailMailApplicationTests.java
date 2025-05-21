@@ -2,19 +2,27 @@ package com.ben.SnailMail;
 
 import com.ben.SnailMail.models.Mail;
 import com.ben.SnailMail.services.MailService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.ArgumentMatchers.any;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -67,7 +75,7 @@ class SnailMailApplicationTests {
 	void testSendMailSuccess(){
 
 		//Valid mail object
-		Mail mail = new Mail(1, "me@snailmail.com", "you@snailmail.com", "Test", "We b testing");
+		Mail mail = new Mail("sdf", "me@snailmail.com", "you@snailmail.com", "Test", "We b testing");
 
 		Response response = given()
 				.contentType("application/json") //Do we need to specify the content type here?
@@ -93,7 +101,7 @@ class SnailMailApplicationTests {
 	void testSendMailFailsOnMissingField(){
 
 		//This one has a missing subject, so it should throw an exception
-		Mail mail = new Mail(1, "me@snailmail.com", "you@snailmail.com", "", "We b testing");
+		Mail mail = new Mail("sdf", "me@snailmail.com", "you@snailmail.com", "", "We b testing");
 
 		Response response = given()
 				.contentType("application/json")
@@ -110,8 +118,6 @@ class SnailMailApplicationTests {
 
 	}
 
-	//TODO: test send fails on XYZ________ missing input?
-
 	//Tests using mocking--------------- Mockito and MockMVC
 
 	//Here's a test that uses Mockito - it will let us mock method calls and return values of our choosing
@@ -126,8 +132,102 @@ class SnailMailApplicationTests {
 				.andExpect(content().string(""));   //Expect no response body
 	}
 
+	@Test
+	void testPostMailMocked() throws Exception {
+		Mail mail = new Mail("me@snailmail.com", "you@snailmail.com", "hi", "sup");
 
-	//testing login, making sure the session is created
+		//note the "ArgumentMatchers.any()" which allows us to mock any Mail object values
+		when(mailService.sendMail(ArgumentMatchers.any(Mail.class))).thenReturn(mail);;
 
+		mockMvc.perform(post("/mail")
+						.contentType(MediaType.APPLICATION_JSON)                         // specify JSON request
+						.accept(MediaType.APPLICATION_JSON)                              // expect JSON response
+						.content(new ObjectMapper().writeValueAsString(mail)))           // serialize the Mail object
+				.andExpect(status().isCreated())
+				.andExpect(content().string(new ObjectMapper().writeValueAsString(mail)));        // assert JSON field
+	}
+
+
+	//testing login, for cookies is created
+	@Test
+	void loginSetsSessionCookie() {
+		// Define the login payload
+		String loginJson = """
+            {
+              "username": "username",
+              "password": "password"
+            }
+        """;
+
+		// Send the POST request and extract the response
+		Response response = given()
+				.contentType("application/json")
+				.body(loginJson)
+				.when()
+				.post("http://localhost:8080/auth/login");
+
+		// Assert 200 OK and session cookie set
+		response.then()
+				.statusCode(200)
+				.body("username", equalTo("username")) //Check the response body
+				.cookie("JSESSIONID", notNullValue());
+
+	}
+
+
+	//a filter for logging
+	@Test
+	void testWithLoggingFilters() {
+		given()
+				.filter(new RequestLoggingFilter()) //logs the request
+				.filter(new ResponseLoggingFilter()) //logs the response
+				.contentType("application/json")
+				.body(new Mail("sdf", "me@snailmail.com", "you@snailmail.com", "Hi", "Body"))
+				.when()
+				.post("http://localhost:8080/mail")
+				.then()
+				.statusCode(201);
+	}
+
+	//test change password works
+	@Test
+	void testChangePassword() {
+		String changePasswordJson = """
+			{
+			  "oldPassword": "password",
+			  "newPassword": "newpassword"
+			}
+		""";
+
+		Response response = given()
+				.contentType("application/json")
+				.body(changePasswordJson)
+				.when()
+				.post("http://localhost:8080/auth/change-password");
+
+		response.then()
+				.statusCode(200)
+				.body(equalTo("Password changed successfully"));
+	}
+
+	@Test
+	void testChangePasswordFails() {
+		String changePasswordJson = """
+			{
+			  "oldPassword": "wrongpassword",
+			  "newPassword": "newpassword"
+			}
+		""";
+
+		Response response = given()
+				.contentType("application/json")
+				.body(changePasswordJson)
+				.when()
+				.post("http://localhost:8080/auth/change-password");
+
+		response.then()
+				.statusCode(400)
+				.body(equalTo("Incorrect old password"));
+	}
 
 }

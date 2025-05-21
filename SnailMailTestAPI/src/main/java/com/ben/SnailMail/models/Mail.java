@@ -1,11 +1,16 @@
 package com.ben.SnailMail.models;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.stereotype.Component;
 
 @Component
+@Document(collection = "mail")
 public class Mail {
 
-    private int mailId;
+    @MongoId
+    private String mailId;
 
     private String sender;
 
@@ -18,7 +23,7 @@ public class Mail {
     public Mail() {
     }
 
-    public Mail(int mailId, String sender, String recipient, String subject, String body) {
+    public Mail(String mailId, String sender, String recipient, String subject, String body) {
         this.mailId = mailId;
         this.sender = sender;
         this.recipient = recipient;
@@ -33,11 +38,11 @@ public class Mail {
         this.body = body;
     }
 
-    public int getMailId() {
+    public String getMailId() {
         return mailId;
     }
 
-    public void setMailId(int mailId) {
+    public void setMailId(String mailId) {
         this.mailId = mailId;
     }
 

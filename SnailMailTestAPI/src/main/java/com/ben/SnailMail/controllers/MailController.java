@@ -25,8 +25,6 @@ public class MailController {
 
         List<Mail> inbox = mailService.getInbox();
 
-        //yes, inbox will never be null since the values are hardcoded in the service
-        //BUT we can use mockito to mock the service and return null
         if(inbox == null){
             return ResponseEntity.status(204).body(null);
         } else{

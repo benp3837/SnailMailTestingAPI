@@ -1,5 +1,6 @@
 package com.ben.SnailMail.controllers;
 
+import com.ben.SnailMail.models.ChangePasswordDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,17 @@ public class AuthController {
         } else {
             //If the login fails, we can throw a failure message back
             return ResponseEntity.status(401).body("Invalid username or password");
+        }
+
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> logout(@RequestBody ChangePasswordDTO cpwDTO){
+
+        if(cpwDTO.getOldPassword().equals("password")){
+            return ResponseEntity.ok("Password changed successfully");
+        } else {
+            return ResponseEntity.status(400).body("Incorrect old password");
         }
 
     }
